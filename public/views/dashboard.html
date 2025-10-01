@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Sistema de Autenticación</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            background: #f5f5f5;
+        }
+        .navbar {
+            background: purple;
+        }
+        .card {
+            border: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .card-header {
+            background: blue;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-dark">
+        <div class="container-fluid">
+            <span class="navbar-brand">
+                <i class="fas fa-shield-alt"></i> Sistema de Autenticación
+            </span>
+            <div class="text-white">
+                <span id="user-name">Usuario</span>
+                <span class="badge bg-light text-dark ms-2" id="user-role">Role</span>
+                <button class="btn btn-outline-light btn-sm ms-3" id="btn-logout">
+                    <i class="fas fa-sign-out-alt"></i> Salir
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido -->
+    <div class="container mt-4">
+        
+        <!-- Tabs -->
+        <ul class="nav nav-tabs mb-3" id="mainTabs" role="tablist">
+            <li class="nav-item">
+                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#users-tab">
+                    <i class="fas fa-users"></i> Usuarios
+                </button>
+            </li>
+            <li class="nav-item" id="roles-tab-btn" style="display: none;">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#roles-tab">
+                    <i class="fas fa-user-tag"></i> Roles
+                </button>
+            </li>
+        </ul>
+
+        <!-- Tab Content -->
+        <div class="tab-content">
+            
+            <!-- Tab Usuarios -->
+            <div class="tab-pane fade show active" id="users-tab">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span><i class="fas fa-users"></i> Gestión de Usuarios</span>
+                        <button class="btn btn-light btn-sm" id="btn-new-user" style="display: none;">
+                            <i class="fas fa-plus"></i> Nuevo
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div id="loading-users" class="text-center py-4">
+                            <i class="fas fa-spinner fa-spin fa-2x text-primary"></i>
+                        </div>
+                        <div id="users-table-container" style="display: none;">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Nombre</th>
+                                            <th>Email</th>
+                                            <th>Rol</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="users-tbody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Roles -->
+            <div class="tab-pane fade" id="roles-tab">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span><i class="fas fa-user-tag"></i> Gestión de Roles</span>
+                        <button class="btn btn-light btn-sm" id="btn-new-role">
+                            <i class="fas fa-plus"></i> Nuevo
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div id="loading-roles" class="text-center py-4">
+                            <i class="fas fa-spinner fa-spin fa-2x text-primary"></i>
+                        </div>
+                        <div id="roles-table-container" style="display: none;">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Rol</th>
+                                            <th>Permisos</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="roles-tbody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modal Usuario -->
+    <div class="modal fade" id="userModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="userModalTitle">Usuario</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="user-id">
+                    
+                    <div class="mb-3">
+                        <label for="user-name-input" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="user-name-input" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="user-email-input" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="user-email-input" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="user-password-input" class="form-label">Contraseña</label>
+                        <input type="password" class="form-control" id="user-password-input">
+                        <small class="text-muted">Dejar vacío para mantener actual</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="user-role-select" class="form-label">Rol</label>
+                        <select class="form-select" id="user-role-select" required></select>
+                    </div>
+
+                    <div id="user-form-errors" class="alert alert-danger d-none"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="btn-save-user">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Rol -->
+    <div class="modal fade" id="roleModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="roleModalTitle">Rol</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="role-id">
+                    
+                    <div class="mb-3">
+                        <label for="role-name-input" class="form-label">Nombre del Rol</label>
+                        <input type="text" class="form-control" id="role-name-input" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Permisos</label>
+                        <div id="permissions-container"></div>
+                    </div>
+
+                    <div id="role-form-errors" class="alert alert-danger d-none"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="btn-save-role">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- JavaScript -->
+    <script src="js/app.js"></script>
+    <script src="js/dashboard.js"></script>
+
+</body>
+</html>
