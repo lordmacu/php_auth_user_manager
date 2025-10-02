@@ -12,13 +12,10 @@ use Domain\Role\IRoleRepository;
  */
 class RoleValidator
 {
-    private IRoleRepository $role_repository;
-    
-    public function __construct(IRoleRepository $role_repository)
-    {
-        $this->role_repository = $role_repository;
-    }
-    
+    public function __construct(
+        private IRoleRepository $role_repository
+    ) {}
+
     /**
      * Validar datos para crear rol
      */
@@ -26,7 +23,7 @@ class RoleValidator
     {
         return $this->validateRole($data);
     }
-    
+
     /**
      * Validar datos para actualizar rol
      */
@@ -34,14 +31,14 @@ class RoleValidator
     {
         return $this->validateRole($data, $role_id);
     }
-    
+
     /**
      * Validar datos del rol
      */
     private function validateRole(array $data, ?int $role_id = null): array
     {
         $errors = [];
-        
+
         // Validar nombre del rol
         if (empty($data['role_name'])) {
             $errors[] = 'El nombre del rol es requerido';
@@ -50,12 +47,12 @@ class RoleValidator
         } elseif ($this->role_repository->roleNameExists($data['role_name'], $role_id)) {
             $errors[] = 'El nombre del rol ya existe';
         }
-        
+
         // Validar permisos (opcional, pueden ser vacíos)
         if (isset($data['permissions']) && !is_array($data['permissions'])) {
             $errors[] = 'Los permisos deben ser un array';
         }
-        
+
         return $errors;
     }
 }

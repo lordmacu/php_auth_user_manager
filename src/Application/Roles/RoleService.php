@@ -67,7 +67,6 @@ class RoleService
         
         $role_id = $this->role_repository->create($role);
         
-        // Asignar permisos si fueron enviados
         if (!empty($data['permissions'])) {
             $this->role_repository->assignPermissions($role_id, $data['permissions']);
         }
@@ -98,7 +97,6 @@ class RoleService
         $role->setRoleName($data['role_name']);
         $this->role_repository->update($role);
         
-        // Actualizar permisos si fueron enviados
         if (isset($data['permissions'])) {
             $this->role_repository->assignPermissions($id, $data['permissions']);
         }
@@ -128,7 +126,6 @@ class RoleService
      */
     public function getAllPermissions(): array
     {
-        // Obtener todos los permisos de la BD
         $db = \Config\Database::getInstance()->getConnection();
         $stmt = $db->query("SELECT * FROM permissions ORDER BY id ASC");
         
