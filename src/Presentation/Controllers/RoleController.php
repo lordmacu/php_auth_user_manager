@@ -57,8 +57,7 @@ class RoleController extends Controller
     {
         $current_user = $this->auth_middleware->authenticate();
         
-        // Verificar permisos
-        if (!$this->permission_checker->canManageRoles($current_user['role_id'])) {
+         if (!$this->permission_checker->canManageRoles($current_user['role_id'])) {
             Response::forbidden('No tienes permiso para ver roles');
         }
         
@@ -79,7 +78,6 @@ class RoleController extends Controller
     {
         $current_user = $this->auth_middleware->authenticate();
         
-        // Solo SuperAdmin puede crear roles
         if (!$this->permission_checker->canManageRoles($current_user['role_id'])) {
             Response::forbidden('Solo SuperAdmin puede crear roles');
         }
@@ -105,7 +103,6 @@ class RoleController extends Controller
     {
         $current_user = $this->auth_middleware->authenticate();
         
-        // Solo SuperAdmin puede actualizar roles
         if (!$this->permission_checker->canManageRoles($current_user['role_id'])) {
             Response::forbidden('Solo SuperAdmin puede actualizar roles');
         }
@@ -131,7 +128,6 @@ class RoleController extends Controller
     {
         $current_user = $this->auth_middleware->authenticate();
         
-        // Solo SuperAdmin puede eliminar roles
         if (!$this->permission_checker->canManageRoles($current_user['role_id'])) {
             Response::forbidden('Solo SuperAdmin puede eliminar roles');
         }
@@ -153,7 +149,6 @@ class RoleController extends Controller
     {
         $current_user = $this->auth_middleware->authenticate();
         
-        // Solo SuperAdmin puede ver permisos
         if (!$this->permission_checker->canManageRoles($current_user['role_id'])) {
             Response::forbidden('No tienes permiso para ver permisos');
         }

@@ -15,15 +15,15 @@ use Infrastructure\Repositories\UserRepository;
 class AuthController extends Controller
 {
     private AuthService $auth_service;
-    
+
     public function __construct()
     {
         parent::__construct();
-        
+
         $user_repository = new UserRepository();
         $this->auth_service = new AuthService($user_repository);
     }
-    
+
     /**
      * Login - Autenticar usuario
      * POST /api/login
@@ -32,20 +32,17 @@ class AuthController extends Controller
     {
         $email = $this->request->get('email');
         $password = $this->request->get('password');
-        
-        // Validar datos básicos
+
         if (empty($email) || empty($password)) {
             Response::badRequest(['El email y contraseña son requeridos']);
         }
-        
-        // Intentar login
+
         $result = $this->auth_service->login($email, $password);
-        
+
         if (!$result) {
             Response::unauthorized('Credenciales inválidas');
         }
-        
-        // Login exitoso
+
         Response::success([
             'token' => $result['token'],
             'user' => $result['user']

@@ -6,10 +6,12 @@
  * Aquí se definen todas las rutas disponibles
  */
 
-use Presentation\Controllers\AuthController;
-use Presentation\Controllers\PageController;
-use Presentation\Controllers\UserController;
-use Presentation\Controllers\RoleController;
+use Presentation\Controllers\{
+    AuthController,
+    PageController,
+    UserController,
+    RoleController
+};
 
 // ============================================
 // RUTAS PÚBLICAS (sin autenticación)

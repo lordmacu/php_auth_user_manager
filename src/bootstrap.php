@@ -15,8 +15,7 @@ session_start();
 // Configuración de zona horaria
 date_default_timezone_set('America/Bogota');
 
-// Configuración de errores (desarrollo)
-error_reporting(E_ALL);
+ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 /**
@@ -24,15 +23,12 @@ ini_set('display_errors', 1);
  * Convierte nombres de clases a rutas de archivos
  */
 spl_autoload_register(function ($class_name) {
-    // Directorio base donde están las clases
-    $base_directory = __DIR__ . '/';
+     $base_directory = __DIR__ . '/';
     
-    // Convertir namespace a ruta de archivo
-    // Ejemplo: Domain\User\User -> Domain/User/User.php
+ 
     $file_path = $base_directory . str_replace('\\', '/', $class_name) . '.php';
     
-    // Si el archivo existe, cargarlo
-    if (file_exists($file_path)) {
+     if (file_exists($file_path)) {
         require_once $file_path;
     }
 });
@@ -49,22 +45,18 @@ function loadEnvironment($file_path) {
     $lines = file($file_path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
     
     foreach ($lines as $line) {
-        // Ignorar comentarios
-        if (strpos(trim($line), '#') === 0) {
+         if (strpos(trim($line), '#') === 0) {
             continue;
         }
         
-        // Separar clave=valor
-        if (strpos($line, '=') !== false) {
+         if (strpos($line, '=') !== false) {
             list($key, $value) = explode('=', $line, 2);
             $key = trim($key);
             $value = trim($value);
             
-            // Remover comillas si existen
-            $value = trim($value, '"\'');
+             $value = trim($value, '"\'');
             
-            // Definir como constante y en $_ENV
-            if (!defined($key)) {
+             if (!defined($key)) {
                 define($key, $value);
             }
             $_ENV[$key] = $value;

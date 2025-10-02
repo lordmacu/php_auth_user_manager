@@ -52,7 +52,6 @@ class JWT
      */
     public function validate(string $token): array|false
     {
-        // Dividir el token en sus partes
         $parts = explode('.', $token);
         
         if (count($parts) !== 3) {
@@ -61,7 +60,6 @@ class JWT
         
         [$header_encoded, $payload_encoded, $signature_encoded] = $parts;
         
-        // Verificar firma
         $signature = hash_hmac(
             'sha256',
             "$header_encoded.$payload_encoded",
@@ -74,10 +72,8 @@ class JWT
             return false;
         }
         
-        // Decodificar payload
         $payload = json_decode($this->base64UrlDecode($payload_encoded), true);
         
-        // Verificar expiración
         if (isset($payload['exp']) && $payload['exp'] < time()) {
             return false;
         }

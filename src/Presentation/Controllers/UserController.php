@@ -41,7 +41,6 @@ class UserController extends Controller
     {
         $current_user = $this->auth_middleware->authenticate();
         
-        // Verificar permisos
         if (!$this->permission_checker->canViewAllUsers($current_user['role_id'])) {
             Response::forbidden('No tienes permiso para ver todos los usuarios');
         }
@@ -59,7 +58,6 @@ class UserController extends Controller
     {
         $current_user = $this->auth_middleware->authenticate();
         
-        // User solo puede ver su propio perfil
         if (!$this->permission_checker->canViewAllUsers($current_user['role_id'])) {
             if ($current_user['user_id'] != $id) {
                 Response::forbidden('Solo puedes ver tu propio perfil');
@@ -83,7 +81,6 @@ class UserController extends Controller
     {
         $current_user = $this->auth_middleware->authenticate();
         
-        // Verificar permisos
         if (!$this->permission_checker->canCreateUsers($current_user['role_id'])) {
             Response::forbidden('No tienes permiso para crear usuarios');
         }
@@ -109,9 +106,7 @@ class UserController extends Controller
     {
         $current_user = $this->auth_middleware->authenticate();
         
-        // Verificar permisos
         if (!$this->permission_checker->canUpdateUsers($current_user['role_id'])) {
-            // User solo puede actualizar su propio perfil
             if ($current_user['user_id'] != $id) {
                 Response::forbidden('Solo puedes actualizar tu propio perfil');
             }
@@ -138,12 +133,10 @@ class UserController extends Controller
     {
         $current_user = $this->auth_middleware->authenticate();
         
-        // Verificar permisos
         if (!$this->permission_checker->canDeleteUsers($current_user['role_id'])) {
             Response::forbidden('No tienes permiso para eliminar usuarios');
         }
         
-        // No permitir auto-eliminación
         if ($current_user['user_id'] == $id) {
             Response::badRequest(['No puedes eliminar tu propio usuario']);
         }
