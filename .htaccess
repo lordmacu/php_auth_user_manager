@@ -1,1 +1,8 @@
- 
+# Root/.htaccess
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Redirige todo lo que llegue al root al directorio /public
+    RewriteCond %{REQUEST_URI} !^/public
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
