@@ -76,8 +76,7 @@ async function fetchAPI(endpoint, options = {}) {
         const response = await fetch(`${API_URL}${endpoint}`, config);
         const data = await response.json();
         
-        // Si el token expiró, cerrar sesión
-        if (response.status === 401) {
+         if (response.status === 401) {
             logout();
             return null;
         }
