@@ -5,6 +5,8 @@ Se utilizo DDD como estrategia en arquitectura  para garantizar escalabilidad y 
 
 Adicional se realizo con esta arquitectura para mostrar el conocimiento en la estructuración del proyecto en sus diferentes partes.
 
+Como convension de codigo se utiliz¿o snake_case para variables y camelCase para metodos
+
 ---
 
 ## ⚙️ Características
