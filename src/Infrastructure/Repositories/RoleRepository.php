@@ -118,12 +118,10 @@ class RoleRepository implements IRoleRepository
      */
     public function delete(int $id): bool
     {
-        // Primero eliminar permisos asociados
         $query_permissions = "DELETE FROM role_has_permissions WHERE role_id = ?";
         $stmt = $this->connection->prepare($query_permissions);
         $stmt->execute([$id]);
         
-        // Luego eliminar el rol
         $query = "DELETE FROM roles WHERE id = ?";
         $stmt = $this->connection->prepare($query);
         return $stmt->execute([$id]);
@@ -153,12 +151,10 @@ class RoleRepository implements IRoleRepository
      */
     public function assignPermissions(int $role_id, array $permission_ids): bool
     {
-        // Eliminar permisos anteriores
         $query_delete = "DELETE FROM role_has_permissions WHERE role_id = ?";
         $stmt = $this->connection->prepare($query_delete);
         $stmt->execute([$role_id]);
         
-        // Insertar nuevos permisos
         if (empty($permission_ids)) {
             return true;
         }

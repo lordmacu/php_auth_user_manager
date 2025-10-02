@@ -13,21 +13,16 @@ use Infrastructure\Security\Hash;
  */
 class AuthService
 {
-    private IUserRepository $user_repository;
-    private JWT $jwt;
-    
-    public function __construct(IUserRepository $user_repository)
-    {
-        $this->user_repository = $user_repository;
-        $this->jwt = new JWT();
-    }
+    public function __construct(
+        private IUserRepository $user_repository,
+        private JWT $jwt = new JWT()
+    ) {}
     
     /**
      * Autenticar usuario y generar token
      */
     public function login(string $email, string $password): array|false
     {
-        // Buscar usuario por email
         $user = $this->user_repository->findByEmail($email);
 
         
@@ -35,12 +30,10 @@ class AuthService
             return false;
         }
         
-        // Verificar contraseña
         if (!Hash::verify($password, $user->getPassword())) {
             return false;
         }
         
-        // Generar token
         $token = $this->jwt->generate([
             'user_id' => $user->getId(),
             'email' => $user->getEmail(),

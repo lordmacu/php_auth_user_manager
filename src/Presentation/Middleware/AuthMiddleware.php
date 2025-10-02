@@ -27,15 +27,13 @@ class AuthMiddleware
      */
     public function authenticate(): array
     {
-        // Obtener token del header Authorization
-        $token = $this->getToken();
+         $token = $this->getToken();
         
         if (!$token) {
             Response::unauthorized('Token no proporcionado');
         }
         
-        // Validar token
-        $payload = $this->auth_service->validateToken($token);
+         $payload = $this->auth_service->validateToken($token);
         
         if (!$payload) {
             Response::unauthorized('Token inválido o expirado');
